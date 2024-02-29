@@ -46,12 +46,14 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun TTTScreen(viewModel: TTTViewModel = viewModel()) {
+fun TTTScreen() {
     Column(
-        modifier = Modifier.background(color = Color.White)
+        modifier = Modifier
+            .background(color = Color.White)
+            .padding(24.dp)
     ) {
         Header()
-        TurnDisplayer()
+        TurnOrderDisplay()
     }
 }
 
@@ -66,25 +68,36 @@ fun Header(fontSize: TextUnit = 24.sp) {
 }
 
 @Composable
-fun TurnDisplayer(
-
-    ) {
+fun TurnOrderDisplay(
+    viewModel: TTTViewModel = viewModel(),
+    padding: Dp = 24.dp,
+    background: Int = 0,
+    color: Int = 1
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(padding),
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        PlayerTurn(player = "Player")
-        PlayerTurn(player = "    AI    ")
+        PlayerTurn(
+            player = "Player",
+            backGround = viewModel.playerTurnIndicator[background],
+            color = viewModel.playerTurnIndicator[color]
+        )
+        PlayerTurn(
+            player = "    AI    ",
+            backGround = viewModel.aiTurnIndicator[background],
+            color = viewModel.aiTurnIndicator[color]
+        )
     }
-}
-
-fun Board() {
-
 }
 
 @Composable
 fun PlayerTurn(
     player: String,
+    backGround: Color,
+    color: Color,
     fontSize: TextUnit = 16.sp,
     startPadding: Dp = 20.dp,
     endPadding: Dp = 20.dp,
@@ -93,13 +106,14 @@ fun PlayerTurn(
 ) {
     Text(
         modifier = Modifier
-            .background(Color.LightGray)
+            .background(backGround)
             .padding(
                 start = startPadding,
                 end = endPadding,
                 top = topPadding,
                 bottom = bottomPadding
             ),
+        color = color,
         fontSize = fontSize,
         text = player
     )
